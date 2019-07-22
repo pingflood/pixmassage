@@ -1,0 +1,10 @@
+Package: pixmassage
+Version: 
+Description: Try to fix stuck pixel
+Section: emus
+Priority: optional
+Maintainer: pingflood
+Architecture: mipsel
+Homepage: https://github.com/pingflood/pixmassage
+Depends:
+Source: https://github.com/pingflood/pixmassage
