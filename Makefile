@@ -1,3 +1,11 @@
+#
+# Battery Logger for the RetroFW
+#
+# by pingflood; 2019
+#
+
+TARGET = pixmassage/pixmassage.dge
+
 CHAINPREFIX=/opt/mipsel-linux-uclibc
 CROSS_COMPILE=$(CHAINPREFIX)/usr/bin/mipsel-linux-
 
@@ -18,10 +26,10 @@ LDFLAGS = $(SDL_LIBS) -lfreetype -lSDL_image -lSDL_ttf -lSDL -lpthread
 LDFLAGS +=-Wl,--as-needed -Wl,--gc-sections -s
 
 pc:
-	gcc pixmassage.c -g -o pixmassage.dge -ggdb -O0 -DDEBUG -lSDL_image -lSDL -lSDL_ttf -I/usr/include/SDL
+	gcc src/pixmassage.c -g -o $(TARGET) -ggdb -O0 -DDEBUG -lSDL_image -lSDL -lSDL_ttf -I/usr/include/SDL
 
 retrogame:
-	$(CXX) $(CFLAGS) $(LDFLAGS) pixmassage.c -o pixmassage.dge
+	$(CXX) $(CFLAGS) $(LDFLAGS) src/pixmassage.c -o $(TARGET)
 
 ipk: retrogame
 	@rm -rf /tmp/.pixmassage-ipk/ && mkdir -p /tmp/.pixmassage-ipk/root/home/retrofw/apps/pixmassage /tmp/.pixmassage-ipk/root/home/retrofw/apps/gmenu2x/sections/applications
@@ -32,6 +40,14 @@ ipk: retrogame
 	@tar --owner=0 --group=0 -czvf /tmp/.pixmassage-ipk/data.tar.gz -C /tmp/.pixmassage-ipk/root/ .
 	@echo 2.0 > /tmp/.pixmassage-ipk/debian-binary
 	@ar r pixmassage.ipk /tmp/.pixmassage-ipk/control.tar.gz /tmp/.pixmassage-ipk/data.tar.gz /tmp/.pixmassage-ipk/debian-binary
+
+opk: retrogame
+	@mksquashfs \
+	pixmassage/default.retrofw.desktop \
+	pixmassage/pixmassage.dge \
+	pixmassage/pixmassage.png \
+	pixmassage/pixmassage.opk \
+	-all-root -noappend -no-exports -no-xattrs
 
 clean:
 	rm -rf pixmassage.dge pixmassage.ipk

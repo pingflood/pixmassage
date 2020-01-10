@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PixMassage
+Comment=Try to fix stuck pixel
+Exec=pixmassage.dge
+Icon=pixmassage
+Categories=applications;
+Terminal=false
+Type=Application
+StartupNotify=true
